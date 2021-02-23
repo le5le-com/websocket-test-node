@@ -7,13 +7,9 @@ var server = ws
 
     conn.sendText(
       JSON.stringify({
-        event: 'test-color',
-        data: [
-          {
-            key: 'font.color',
-            value: 'red',
-          },
-        ],
+        tag: 'tag1',
+        fontColor: 'red',
+        text: 'This is a websocket text.',
       })
     );
     conn.on('text', function (str) {
