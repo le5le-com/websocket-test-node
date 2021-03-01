@@ -1,23 +1,19 @@
-var ws = require('nodejs-websocket');
+const WebSocket = require('ws');
 
-// Scream server example: "hi" -> "HI!!!"
-var server = ws
-  .createServer(function (conn) {
-    console.log('New connection');
+const wss = new WebSocket.Server({ port: 8080 });
 
-    conn.sendText(
-      JSON.stringify({
-        tag: 'tag1',
-        fontColor: 'red',
-        text: 'This is a websocket text.',
-      })
-    );
-    conn.on('text', function (str) {
-      console.log('Received ' + str);
-      conn.sendText(str);
-    });
-    conn.on('close', function (code, reason) {
-      console.log('Connection closed');
-    });
-  })
-  .listen(31800);
+wss.on('connection', function connection(ws) {
+  console.log('New connection');
+
+  ws.on('message', function incoming(message) {
+    console.log('received: %s', message);
+  });
+
+  ws.send(
+    JSON.stringify({
+      tag: 'tag1',
+      fontColor: 'red',
+      text: 'A websocket text.',
+    })
+  );
+});
